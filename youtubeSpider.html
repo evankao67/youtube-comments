@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>YouTube Spider</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="search-container">
+		<h1>YouTube 留言搜尋器</h1>
+		<input type="text" id="url-input" placeholder="請輸入Youtube影片網址，即可幫您搜尋留言">
+		<button type="submit" onclick="fetchComments()">搜尋</button>
+	</div>
+	<h2 style="color: #333; font-size: 24px; font-weight: bold; text-align: left;">搜尋結果</h2>
+	<div class="results-container">
+		<pre id="result"></pre>
+		<div id="comment-section"></div>
+	</div>
+	<script src="app.js"></script>
+</body>
+
+</html>

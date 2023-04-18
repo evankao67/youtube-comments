@@ -1,0 +1,65 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+}
+
+.search-container {
+	background-color: #f2f2f2;
+	padding: 20px;
+	text-align: center;
+}
+
+.search-container h1 {
+	margin: 0;
+}
+
+.search-container form {
+	margin-top: 20px;
+}
+
+.search-container input[type=text] {
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	width: 60%;
+	margin-right: 10px;
+}
+
+.search-container button[type=submit] {
+	background-color: #4CAF50;
+	color: #fff;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.results-container {
+	background-color: #ECECEC; /*綠色*/
+	color: black; /*文字顏色*/
+	font-weight: bold;
+	padding: 20px; /*內距*/
+	margin: 20px 0; /*外距*/
+}
+
+.results-container h2 {
+	margin: 0;
+}
+
+.results-container ul {
+	list-style: none;
+	padding: 0;
+}
+
+.results-container li {
+	margin-bottom: 10px;
+}
+
+.results-container li a {
+	color: #000;
+	text-decoration: none;
+}
+
+.results-container li a:hover {
+	text-decoration: underline;
+}
