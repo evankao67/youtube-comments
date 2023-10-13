@@ -176,13 +176,11 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
             TextButton(
               child: Text('Store'),
               onPressed: () {
-                setState(() {
                   storedRoutes.add(selectedCommands);
                   //print(storedRoutes);
                   selectedCommands.clear();
                   Navigator.of(context).pop();
-                });
-              },
+                },
             ),
           ],
         );
