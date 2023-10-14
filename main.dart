@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 String droneName = '';
 String droneIP = '';
@@ -78,7 +79,7 @@ class WelcomePage extends StatelessWidget {
               ),
               child: Text(
                 'Get Started',
-                style: TextStyle(fontSize: 18, color:  Color.fromRGBO(137, 78, 33, 1), fontWeight: FontWeight.w700 ),
+                style: TextStyle(fontSize: 18, color:  Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700 ),
               ),
             ),
           ],
@@ -439,117 +440,144 @@ class SelectionPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Select Your Option'),
       ),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 20.0,
-            left: 20.0,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: 350,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RouteDestinationPage(storedRoutes)),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(246, 128, 37, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RouteDestinationPage(storedRoutes)),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(246, 128, 37, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.add_location),
+                      Text(
+                        'Select',
+                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        'Route',
+                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
                 ),
-                child: Text(
-                  'Select Route Destination',
-                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 20.0,
-            right: 20.0,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: 350,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MissionSchedulingPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(246, 128, 37, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MissionSchedulingPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(246, 128, 37, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.schedule),
+                      Text(
+                        'Schedule',
+                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        'Mission',
+                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
                 ),
-                child: Text(
-                  'Schedule Mission',
-                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
-                ),
-              ),
+              ],
             ),
-          ),
-          Positioned(
-            bottom: 20.0,
-            left: 20.0,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: 350,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RouteDestinationSetupPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(246, 128, 37, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RouteDestinationSetupPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(246, 128, 37, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.settings),
+                      Text(
+                        'Route',
+                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        'Setup',
+                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
                 ),
-                child: Text(
-                  'Route Destination Setup',
-                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 20.0,
-            right: 20.0,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: 350,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(246, 128, 37, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(246, 128, 37, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.add_circle),
+                      Text(
+                        'Register',
+                        style: TextStyle(fontFamily: "Rock Salt", fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        'Drone',
+                        style: GoogleFonts.rubikPixels(
+                            fontSize: 26,
+                            color: Color.fromRGBO(114, 56, 35, 1),
+                            fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Text(
-                  'Register Drone',
-                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
-                ),
-              ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
+
 
 
 
