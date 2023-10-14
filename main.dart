@@ -439,13 +439,14 @@ class SelectionPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Select Your Option'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: 300,
-              height: 60,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 20.0,
+            left: 20.0,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 260,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -465,10 +466,13 @@ class SelectionPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              height: 60,
+          ),
+          Positioned(
+            top: 20.0,
+            right: 20.0,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 260,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -488,10 +492,13 @@ class SelectionPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              height: 60,
+          ),
+          Positioned(
+            bottom: 20.0,
+            left: 20.0,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 260,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -511,10 +518,13 @@ class SelectionPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              height: 60,
+          ),
+          Positioned(
+            bottom: 20.0,
+            right: 20.0,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 260,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -530,16 +540,19 @@ class SelectionPage extends StatelessWidget {
                 ),
                 child: Text(
                   'Register Drone',
-                  style: TextStyle(fontSize: 16, color: Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
+
+
 // The main function and other necessary code here
 
 
