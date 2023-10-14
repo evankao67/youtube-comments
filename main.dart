@@ -3,6 +3,28 @@ import 'package:flutter/material.dart';
 String droneName = '';
 String droneIP = '';
 List<List<String>> storedRoutes= [];
+
+MaterialColor createMaterialColor(Color color) {
+  List strengths = <double>[.05];
+  Map<int, Color> swatch = {};
+  final int r = color.red, g = color.green, b = color.blue;
+
+  for (int i = 1; i < 10; i++) {
+    strengths.add(0.1 * i);
+  }
+  strengths.forEach((strength) {
+    final double ds = 0.5 - strength;
+    swatch[(strength * 1000).round()] = Color.fromRGBO(
+      r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+      g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+      b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+      1,
+    );
+  });
+  return MaterialColor(color.value, swatch);
+}
+
+
 void main() {
   runApp(MyApp());
 }
@@ -13,8 +35,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Drone App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: createMaterialColor(Colors.black),
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        scaffoldBackgroundColor: createMaterialColor(Color.fromRGBO(255, 250, 250, 0.7)),
       ),
       home: WelcomePage(),
     );
@@ -47,7 +70,7 @@ class WelcomePage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                primary: Color.fromRGBO(246, 128, 37, 1),
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -55,7 +78,7 @@ class WelcomePage extends StatelessWidget {
               ),
               child: Text(
                 'Get Started',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: TextStyle(fontSize: 18, color:  Color.fromRGBO(137, 78, 33, 1), fontWeight: FontWeight.w700 ),
               ),
             ),
           ],
@@ -205,7 +228,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreenAccent,
+      backgroundColor: Color.fromRGBO(39, 29, 90, 1),
       appBar: AppBar(
         title: Text('Route Destination Setup Page'),
       ),
@@ -221,7 +244,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
             flex:9,
             child: SingleChildScrollView(
               child: Container(
-                color: Colors.grey[200], // Set the desired background color
+                //color: Colors.grey[200], // Set the desired background color
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   children: selectedCommands
@@ -262,7 +285,19 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                 ),
                 ElevatedButton(
                   onPressed: _clearCommands,
-                  child: Text('Trash Can'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.delete, color: Colors.white),
+                      SizedBox(width: 5)
+                    ],
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -419,14 +454,14 @@ class SelectionPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary: Color.fromRGBO(246, 128, 37, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
                 child: Text(
                   'Select Route Destination',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -442,14 +477,14 @@ class SelectionPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary: Color.fromRGBO(246, 128, 37, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
                 child: Text(
                   'Schedule Mission',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -465,14 +500,14 @@ class SelectionPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary: Color.fromRGBO(246, 128, 37, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
                 child: Text(
                   'Route Destination Setup',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color:  Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -488,14 +523,14 @@ class SelectionPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary: Color.fromRGBO(246, 128, 37, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
                 child: Text(
                   'Register Drone',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Color.fromRGBO(137, 78, 33, 1),  fontWeight: FontWeight.w700),
                 ),
               ),
             ),
