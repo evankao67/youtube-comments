@@ -35,9 +35,10 @@ class WelcomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Welcome to the Dobermann',
-              style: TextStyle(fontSize: 24),
+              'Welcome to Dobermann',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -45,7 +46,17 @@ class WelcomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => SelectionPage()),
                 );
               },
-              child: Text('Get Started'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Text(
+                'Get Started',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
           ],
         ),
@@ -176,11 +187,14 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
             TextButton(
               child: Text('Store'),
               onPressed: () {
-                  storedRoutes.add(selectedCommands);
+                setState(() {
+                  List<String> tmp = new List<String>.from(selectedCommands);
+                  storedRoutes.add(tmp);
                   //print(storedRoutes);
                   selectedCommands.clear();
                   Navigator.of(context).pop();
-                },
+                });
+              },
             ),
           ],
         );
@@ -191,6 +205,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightGreenAccent,
       appBar: AppBar(
         title: Text('Route Destination Setup Page'),
       ),
@@ -202,15 +217,38 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
             color: Colors.grey, // Placeholder color for the live camera video
           ),
           SizedBox(height: 20),
-          Column(
-            children: selectedCommands
-                .map((command) => Text(
-              'Selected Command: $command',
-              style: TextStyle(fontSize: 20),
-            ))
-                .toList(),
+          Expanded(
+            flex:9,
+            child: SingleChildScrollView(
+              child: Container(
+                color: Colors.grey[200], // Set the desired background color
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: selectedCommands
+                      .map(
+                        (command) =>
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
+                          child: Card(
+                            elevation: 2.0,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                command,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ),
+                        ),
+                  )
+                      .toList(),
+                ),
+              ),
+            ),
           ),
           Expanded(
+            flex:1,
             child: Container(), // Add your live camera video widget here later
           ),
           Padding(
@@ -227,7 +265,9 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                   child: Text('Trash Can'),
                 ),
                 ElevatedButton(
-                  onPressed: _storeRoute,
+                  onPressed: () {
+                    _storeRoute();
+                  },
                   child: Text('Store Route'),
                 ),
               ],
@@ -263,11 +303,17 @@ class FlyingCommandPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             for (var command in commands)
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, command);
-                },
-                child: Text(command),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context, command);
+                    },
+                    child: Text(command),
+                  ),
+                ),
               ),
           ],
         ),
@@ -275,6 +321,7 @@ class FlyingCommandPage extends StatelessWidget {
     );
   }
 }
+
 
 // Import statements and other code here
 
@@ -361,8 +408,9 @@ class SelectionPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            SizedBox(
+              width: 300,
+              height: 60,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -370,15 +418,22 @@ class SelectionPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => RouteDestinationPage(storedRoutes)),
                   );
                 },
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  child: Center(child: Text('Select Route Destination')),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  'Select Route Destination',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            SizedBox(height: 20),
+            SizedBox(
+              width: 300,
+              height: 60,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -386,15 +441,22 @@ class SelectionPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => MissionSchedulingPage()),
                   );
                 },
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  child: Center(child: Text('Schedule Mission')),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  'Schedule Mission',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            SizedBox(height: 20),
+            SizedBox(
+              width: 300,
+              height: 60,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -402,15 +464,22 @@ class SelectionPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => RouteDestinationSetupPage()),
                   );
                 },
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  child: Center(child: Text('Route Destination Setup')),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  'Route Destination Setup',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            SizedBox(height: 20),
+            SizedBox(
+              width: 300,
+              height: 60,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -418,10 +487,15 @@ class SelectionPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
                   );
                 },
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  child: Center(child: Text('Register Drone')),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  'Register Drone',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
@@ -431,7 +505,6 @@ class SelectionPage extends StatelessWidget {
     );
   }
 }
-
 // The main function and other necessary code here
 
 
