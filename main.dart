@@ -445,8 +445,8 @@ class SelectionPage extends StatelessWidget {
             top: 20.0,
             left: 20.0,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: 260,
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 350,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -471,8 +471,8 @@ class SelectionPage extends StatelessWidget {
             top: 20.0,
             right: 20.0,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: 260,
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 350,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -497,8 +497,8 @@ class SelectionPage extends StatelessWidget {
             bottom: 20.0,
             left: 20.0,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: 260,
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 350,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -523,8 +523,8 @@ class SelectionPage extends StatelessWidget {
             bottom: 20.0,
             right: 20.0,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: 260,
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 350,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
