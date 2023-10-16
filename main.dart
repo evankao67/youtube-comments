@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-String droneName = '';
-String droneIP = '';
-List<List<String>> storedRoutes= [];
+//global variable
+class Drone {
+  String name;
+  String ip;
+  int number;
+  List<Route> routes = [];
+  Drone(this.name, this.ip, this.number);
+}
+
+class Route{
+  List<String> storedRoutes= [];
+  String name;
+
+  Route(this.name);
+}
+int howManyDrone = 0;
+int selectedDroneIndex = 0;
+String fromWhereToSelectionPage = '';
+//List<List<String>> storedRoutes= [];
+List<Drone> droneList = [];
+
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
@@ -102,24 +120,42 @@ class RouteDestinationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Route Destination Page'),
+        title: Text('Select Your Route'),
       ),
-      body: Center(
-        child: storedRoutes.isEmpty
-            ? Text('No route set up')
-            : ListView.builder(
-          itemCount: storedRoutes.length,
-          itemBuilder: (context, index) {
-            return ElevatedButton(
-              onPressed: () {
-                _displayRoute(context, storedRoutes[index]);
-                print(storedRoutes);
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Route:',
+              style: cool_font,
+            ),
+            droneList[selectedDroneIndex].routes.isEmpty
+                ? Text('No route set up')
+                : ListView.builder(
+              shrinkWrap: true,
+              itemCount: droneList[selectedDroneIndex].routes.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: ElevatedButton(
+                  onPressed: () {
+                    _displayRoute(context, droneList[selectedDroneIndex].routes[index].storedRoutes);
+                    //print(storedRoutes);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 60), // Adjust the height as needed
+                  ),
+                  child: Text(droneList[selectedDroneIndex].routes[index].name),
+                ),
+                );
               },
-              child: Text('Route ${index + 1}'),
-            );
-          },
+            ),
+          ],
+
         ),
-      ),
+      )
     );
   }
 }
@@ -196,6 +232,26 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
     });
   }
 
+  void _showStoreRouteSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Store Route Successful'),
+          content: Text('You have successfully stored the route.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _storeRoute() {
     showDialog(
       context: context,
@@ -212,11 +268,18 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
               child: Text('Store'),
               onPressed: () {
                 setState(() {
-                  List<String> tmp = new List<String>.from(selectedCommands);
-                  storedRoutes.add(tmp);
-                  //print(storedRoutes);
+                  List<String> tmp = List<String>.from(selectedCommands);
+                  final Route temp = Route(_routeNameController.text);
+                  for (String route__ in tmp) {
+                    temp.storedRoutes.add(route__);
+                  }
+                  droneList[selectedDroneIndex].routes.add(temp);
                   selectedCommands.clear();
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectionPage()),
+                  );
+                  _showStoreRouteSuccessDialog(context);
                 });
               },
             ),
@@ -371,16 +434,35 @@ class _DroneRegistrationPageState extends State<DroneRegistrationPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ipController = TextEditingController();
 
+  void _showRegistrationSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Registration Successful'),
+          content: Text('You have successfully registered the drone.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   void _submitData() {
+    howManyDrone++;
     setState(() {
-      droneName = _nameController.text;
-      droneIP = _ipController.text;
+      droneList.add(Drone(_nameController.text, _ipController.text, howManyDrone-1));
     });
-
-    // Add your document logic here
-    print(droneName);
-    print(droneIP);
+    /*for (var drone in droneList) {
+      print("Drone Name: ${drone.name}, IP: ${drone.ip}");
+    }*/
     Navigator.pop(context);
+    _showRegistrationSuccessDialog(context);
   }
 
   @override
@@ -428,17 +510,55 @@ class _DroneRegistrationPageState extends State<DroneRegistrationPage> {
   }
 }
 
-// The rest of your code here
-
-// The rest of your code here
-
+class SelectDronePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Select Drone'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            for (var drone_ in droneList)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      selectedDroneIndex =  drone_.number;
+                      fromWhereToSelectionPage == "newroute"
+                      ?Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RouteDestinationSetupPage()),
+                      )
+                          : Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RouteDestinationPage(droneList[selectedDroneIndex].routes)),
+                      );
+                      // Perform action when the drone is selected
+                      print('Selected Drone: $drone_');
+                      // Add your desired action here
+                    },
+                    child: Text(drone_.name),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class SelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Your Option'),
+        title: Text('Dobermann'),
       ),
       body: Center(
         child: Column(
@@ -451,7 +571,7 @@ class SelectionPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RouteDestinationPage(storedRoutes)),
+                      MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -463,14 +583,15 @@ class SelectionPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Icon(Icons.add_location),
+                      Icon(Icons.add_circle, size: 45),
+                      SizedBox(height: 10),
                       Text(
-                        'Select',
-                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                          'Register',
+                          style: cool_font
                       ),
                       Text(
-                        'Route',
-                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                          'Drone',
+                          style: cool_font
                       ),
                     ],
                   ),
@@ -491,14 +612,15 @@ class SelectionPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Icon(Icons.schedule),
+                      Icon(Icons.schedule, size: 45),
+                      SizedBox(height: 10),
                       Text(
                         'Schedule',
-                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                        style: cool_font
                       ),
                       Text(
                         'Mission',
-                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                        style: cool_font
                       ),
                     ],
                   ),
@@ -510,9 +632,15 @@ class SelectionPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    fromWhereToSelectionPage = "newroute";
+                    droneList.isEmpty
+                    ? Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RouteDestinationSetupPage()),
+                      MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                    )
+                    : Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectDronePage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -524,23 +652,33 @@ class SelectionPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Icon(Icons.settings),
+                      Icon(Icons.airplanemode_active, size: 45),
+                      SizedBox(height: 10),
                       Text(
-                        'Route',
-                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                        'Create',
+                        style: cool_font
                       ),
                       Text(
-                        'Setup',
-                        style: TextStyle(fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                        'New',
+                        style: cool_font
+                      ),
+                      Text(
+                          'Route',
+                          style: cool_font
                       ),
                     ],
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    fromWhereToSelectionPage = "selectroute";
+                    droneList.isEmpty
+                    ? Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                    ) :Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SelectDronePage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -552,18 +690,15 @@ class SelectionPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Icon(Icons.add_circle),
+                      Icon(Icons.add_location, size: 45),
+                      SizedBox(height: 10),
                       Text(
-                        'Register',
-                        style: TextStyle(fontFamily: "Rock Salt", fontSize: 26, color: Color.fromRGBO(114, 56, 35, 1), fontWeight: FontWeight.w700),
+                          'Select',
+                          style: cool_font
                       ),
                       Text(
-                        'Drone',
-                        style: GoogleFonts.rubikPixels(
-                            fontSize: 26,
-                            color: Color.fromRGBO(114, 56, 35, 1),
-                            fontWeight: FontWeight.w700,
-                        ),
+                          'Route',
+                          style: cool_font
                       ),
                     ],
                   ),
@@ -576,6 +711,15 @@ class SelectionPage extends StatelessWidget {
     );
   }
 }
+
+var cool_font = GoogleFonts.rubik(
+    textStyle: TextStyle(
+    fontSize: 26,
+    color: Color.fromRGBO(114, 56, 35, 1),
+    fontWeight: FontWeight.w700,
+  ));
+
+
 
 
 
