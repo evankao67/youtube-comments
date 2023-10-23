@@ -219,7 +219,7 @@ class Command {
 }
 
 class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
-  List<Command> selectedCommands = [];
+  List<String> selectedCommands = [];
   //WebViewController controller = WebViewController()
   //..loadRequest(Uri.parse('http://192.168.0.156:8080/?action=stream'));
   void _navigateToFlyingCommandPage() async {
@@ -229,17 +229,15 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
     );
     setState(() {
       if (result != null) {
-        selectedCommands.add(Command(result));
+        selectedCommands.add(result);
       }
     });
   }
-
   void _deleteCommand(int index){
-    setState((){
+    setState(() {
       selectedCommands.removeAt(index);
     });
   }
-
   void _clearCommands() {
     setState(() {
       selectedCommands.clear();
@@ -331,45 +329,38 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                       .asMap()
                       .entries
                       .map(
-                        (MapEntry map) => Dismissible(
-                      key: Key(map.value.commandText),
-                      onDismissed: (direction) {
-                        _deleteCommand(map.key);
-                      },
-                      background: Container(color: Colors.red),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16.0),
-                        child: Card(
-                          elevation: 2.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.delete),
-                                      onPressed: () {
-                                        _deleteCommand(map.key);
-                                      },
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      map.value.commandText,
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.play_arrow),
-                                  onPressed: () {
-                                    // Add code to test the command here
-                                  },
-                                ),
-                              ],
-                            ),
+                        (MapEntry map) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
+                      child: Card(
+                        elevation: 2.0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      _deleteCommand(map.key);
+                                    },
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    map.value,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.play_arrow),
+                                onPressed: () {
+                                  // Add logic to test the command here
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
