@@ -18,6 +18,8 @@ class Route{
 
   Route(this.name);
 }
+
+
 int howManyDrone = 0;
 int selectedDroneIndex = 0;
 String fromWhereToSelectionPage = '';
@@ -212,14 +214,10 @@ class RouteDestinationSetupPage extends StatefulWidget {
   @override
   _RouteDestinationSetupPageState createState() => _RouteDestinationSetupPageState();
 }
-class Command {
-  String commandText;
-
-  Command(this.commandText);
-}
 
 class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
   List<String> selectedCommands = [];
+  List<bool> isProceeded = [];
   //WebViewController controller = WebViewController()
   //..loadRequest(Uri.parse('http://192.168.0.156:8080/?action=stream'));
   void _navigateToFlyingCommandPage() async {
@@ -230,17 +228,25 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
     setState(() {
       if (result != null) {
         selectedCommands.add(result);
+        isProceeded.add(false);
       }
     });
   }
   void _deleteCommand(int index){
     setState(() {
       selectedCommands.removeAt(index);
+      isProceeded.removeAt(index);
     });
   }
   void _clearCommands() {
     setState(() {
       selectedCommands.clear();
+      isProceeded.clear();
+    });
+  }
+  void _pressArrow(int index){
+    setState(() {
+      isProceeded[index] = true;
     });
   }
 
@@ -287,6 +293,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                   }
                   droneList[selectedDroneIndex].routes.add(temp);
                   selectedCommands.clear();
+                  isProceeded.clear();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SelectionPage()),
@@ -342,22 +349,25 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                               Row(
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.delete),
+                                    icon: Icon(Icons.delete, color: Colors.red),
                                     onPressed: () {
                                       _deleteCommand(map.key);
                                     },
                                   ),
                                   SizedBox(width: 10),
                                   Text(
-                                    map.value,
+                                    map.value+" " ++"m",
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ],
                               ),
                               IconButton(
-                                icon: Icon(Icons.play_arrow),
+                                icon:
+                                  isProceeded[map.key] == false
+                                ?Icon(Icons.play_arrow, color: Colors.green)
+                                :Icon(Icons.check, color: Colors.green),
                                 onPressed: () {
-                                  // Add logic to test the command here
+                                  _pressArrow(map.key);// Add logic to test the command here
                                 },
                               ),
                             ],
@@ -419,7 +429,7 @@ class FlyingCommandPage extends StatelessWidget {
   final List<String> commands = [
     'Take-off',
     'Landing',
-    'Spin 360',
+    'Spin',
     'Move Forward',
     'Move Backward',
     'Move Left',
