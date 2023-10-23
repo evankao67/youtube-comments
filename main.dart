@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
 
 //global variable
 class Drone {
@@ -210,10 +212,16 @@ class RouteDestinationSetupPage extends StatefulWidget {
   @override
   _RouteDestinationSetupPageState createState() => _RouteDestinationSetupPageState();
 }
+class Command {
+  String commandText;
+
+  Command(this.commandText);
+}
 
 class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
-  List<String> selectedCommands = [];
-
+  List<Command> selectedCommands = [];
+  //WebViewController controller = WebViewController()
+  //..loadRequest(Uri.parse('http://192.168.0.156:8080/?action=stream'));
   void _navigateToFlyingCommandPage() async {
     final result = await Navigator.push(
       context,
@@ -221,8 +229,14 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
     );
     setState(() {
       if (result != null) {
-        selectedCommands.add(result);
+        selectedCommands.add(Command(result));
       }
+    });
+  }
+
+  void _deleteCommand(int index){
+    setState((){
+      selectedCommands.removeAt(index);
     });
   }
 
@@ -289,6 +303,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -302,6 +317,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
             width: double.infinity,
             height: 200, // Adjust the height as needed
             color: Colors.grey, // Placeholder color for the live camera video
+            //child: WebViewWidget(controller: controller),
           ),
           SizedBox(height: 20),
           Expanded(
@@ -312,22 +328,52 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   children: selectedCommands
+                      .asMap()
+                      .entries
                       .map(
-                        (command) =>
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          child: Card(
-                            elevation: 2.0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                command,
-                                style: TextStyle(fontSize: 18),
-                              ),
+                        (MapEntry map) => Dismissible(
+                      key: Key(map.value.commandText),
+                      onDismissed: (direction) {
+                        _deleteCommand(map.key);
+                      },
+                      background: Container(color: Colors.red),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
+                        child: Card(
+                          elevation: 2.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        _deleteCommand(map.key);
+                                      },
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      map.value.commandText,
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.play_arrow),
+                                  onPressed: () {
+                                    // Add code to test the command here
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ),
+                      ),
+                    ),
                   )
                       .toList(),
                 ),
@@ -693,11 +739,11 @@ class SelectionPage extends StatelessWidget {
                       Icon(Icons.add_location, size: 45),
                       SizedBox(height: 10),
                       Text(
-                          'Select',
+                          'Start',
                           style: cool_font
                       ),
                       Text(
-                          'Route',
+                          'Mission',
                           style: cool_font
                       ),
                     ],
@@ -718,6 +764,8 @@ var cool_font = GoogleFonts.rubik(
     color: Color.fromRGBO(114, 56, 35, 1),
     fontWeight: FontWeight.w700,
   ));
+
+
 
 
 
