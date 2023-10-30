@@ -14,6 +14,7 @@ class Drone {
 
 class Route{
   List<String> storedRoutes= [];
+  List<String> parameter =[];
   String name;
 
   Route(this.name);
@@ -218,29 +219,36 @@ class RouteDestinationSetupPage extends StatefulWidget {
 class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
   List<String> selectedCommands = [];
   List<bool> isProceeded = [];
+  List<String> parameterArray = [];
   //WebViewController controller = WebViewController()
   //..loadRequest(Uri.parse('http://192.168.0.156:8080/?action=stream'));
   void _navigateToFlyingCommandPage() async {
-    final result = await Navigator.push(
+    final Map<String, String> result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => FlyingCommandPage()),
     );
+
     setState(() {
       if (result != null) {
-        selectedCommands.add(result);
+        selectedCommands.add(result['command']!);
+        parameterArray.add(result['parameter']!);
         isProceeded.add(false);
+
       }
     });
   }
   void _deleteCommand(int index){
     setState(() {
       selectedCommands.removeAt(index);
+      parameterArray.removeAt(index);
       isProceeded.removeAt(index);
+
     });
   }
   void _clearCommands() {
     setState(() {
       selectedCommands.clear();
+      parameterArray.clear();
       isProceeded.clear();
     });
   }
@@ -287,12 +295,17 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
               onPressed: () {
                 setState(() {
                   List<String> tmp = List<String>.from(selectedCommands);
+                  List<String> paratmp = List<String>.from(parameterArray);
                   final Route temp = Route(_routeNameController.text);
                   for (String route__ in tmp) {
                     temp.storedRoutes.add(route__);
                   }
+                  for (String route___ in paratmp) {
+                    temp.storedRoutes.add(route___);
+                  }
                   droneList[selectedDroneIndex].routes.add(temp);
                   selectedCommands.clear();
+                  parameterArray.clear();
                   isProceeded.clear();
                   Navigator.push(
                     context,
@@ -356,7 +369,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
                                   ),
                                   SizedBox(width: 10),
                                   Text(
-                                    map.value+" " ++"m",
+                                    map.value+" "+parameterArray[map.key]+" meter",
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ],
@@ -440,6 +453,7 @@ class FlyingCommandPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _parameterController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text('Flying Command Page'),
@@ -455,7 +469,8 @@ class FlyingCommandPage extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context, command);
+                      _showParameterDialog(context, command, _parameterController);
+                      //Navigator.pop(context, command);
                     },
                     child: Text(command),
                   ),
@@ -466,7 +481,43 @@ class FlyingCommandPage extends StatelessWidget {
       ),
     );
   }
+  void _showParameterDialog(
+      BuildContext context, String command, TextEditingController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Parameter'),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(hintText: 'Parameter'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                // Handle the submission here
+                String parameter = controller.text;
+                // Navigate back to the RouteDestinationSetupPage
+                Map<String, String> data ={
+                  'command' : command,
+                  'parameter' : parameter,
+                };
+                Navigator.pop(context);
+                Navigator.pop(context, data);
+                /*Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RouteDestinationSetupPage()),
+                );*/
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
 
 
 // Import statements and other code here
