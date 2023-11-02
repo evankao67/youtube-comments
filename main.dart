@@ -174,12 +174,13 @@ class RunningRoutePage extends StatelessWidget {
       ),
       body: Column(children: [
         //SizedBox(height: 100),
-        Container(
-          width: double.infinity,
-          height: 350,
-          color: Colors.grey,
-          // 第一個攝像頭 WebViewWidget
-          //child: WebViewWidget(controller: controller),
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            color: Colors.grey,
+            // 第一个摄像头 WebViewWidget
+            //child: WebViewWidget(controller: controller),
+          ),
         ),
         //SizedBox(height: 10), //畫面的間距
         SizedBox(height: 35),
@@ -220,12 +221,13 @@ class RunningRoutePage extends StatelessWidget {
                   fontWeight: FontWeight.w700),
             )),
         SizedBox(height: 35),
-        Container(
-          width: double.infinity,
-          height: 365,
-          color: Colors.grey,
-          // 第二個攝像頭 WebViewWidget
-          //child: WebViewWidget(controller: controller),
+        Expanded(
+          child: Container(
+            width: double.infinity,
+            color: Colors.grey,
+            // 第一个摄像头 WebViewWidget
+            //child: WebViewWidget(controller: controller),
+          ),
         ),
       ]),
     );
