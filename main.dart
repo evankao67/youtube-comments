@@ -172,16 +172,16 @@ class RouteDestinationPage extends StatelessWidget {
 }
 class RunningRoutePage extends StatelessWidget {
   WebViewController controller = WebViewController()
-  ..loadRequest(Uri.parse('http://192.168.0.156:8080/?action=stream'));
+  ..loadRequest(Uri.parse('http://'+droneList[selectedDroneIndex].ip+':8080/?action=stream'));
 
   WebViewController controller2 = WebViewController()
-    ..loadRequest(Uri.parse('http://192.168.0.156:8081/?action=stream'));
+    ..loadRequest(Uri.parse('http://'+droneList[selectedDroneIndex].ip+':8081/?action=stream'));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff30246e),
+      backgroundColor: Color.fromRGBO(246, 128, 37, 1),
       appBar: AppBar(
-        title: Text('Running Route'),
+        title: Text('Ongoing Flight'),
       ),
       body: Column(children: [
         //SizedBox(height: 100),
@@ -194,14 +194,14 @@ class RunningRoutePage extends StatelessWidget {
           ),
         ),
         //SizedBox(height: 10), //畫面的間距
-        SizedBox(height: 35),
+        SizedBox(height: 95),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               icon: Icon(
                 Icons.play_arrow,
-                color: Color.fromRGBO(246, 128, 37, 1),
+                color: Colors.black,
               ),
               onPressed: () {
                 // 处理第一个按钮的操作
@@ -210,7 +210,7 @@ class RunningRoutePage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.pause,
-                color: Color.fromRGBO(246, 128, 37, 1),
+                color: Colors.black,
               ),
               onPressed: () {
                 // 处理第二个按钮的操作
@@ -222,16 +222,16 @@ class RunningRoutePage extends StatelessWidget {
         ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              primary: Color.fromRGBO(246, 128, 37, 1),
+              primary: Colors.black,
             ),
             child: Text(
               "Show Route",
               style: TextStyle(
                   fontSize: 18,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.w700),
             )),
-        SizedBox(height: 35),
+        SizedBox(height: 95),
         Expanded(
           child: Container(
             width: double.infinity,
@@ -404,7 +404,7 @@ class _NewSchedulingPageState extends State<NewSchedulingPage> {
               SizedBox(height: 20),
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Repeat',
+                  hintText: 'Repeat Every 2 hours',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
@@ -438,7 +438,7 @@ class _NewSchedulingPageState extends State<NewSchedulingPage> {
               SizedBox(height: 20),
               Row(
                 children: [
-                  Text('Fire Detection'),
+                  Text('Fire Detection Notification'),
                   Checkbox(
                     value: fireNotification,
                     onChanged: (bool? value) {
@@ -451,7 +451,7 @@ class _NewSchedulingPageState extends State<NewSchedulingPage> {
               ),
               Row(
                 children: [
-                  Text('Moving Object'),
+                  Text('Moving Object Notification'),
                   Checkbox(
                     value: movingObjectNotification,
                     onChanged: (bool? value) {
@@ -468,7 +468,7 @@ class _NewSchedulingPageState extends State<NewSchedulingPage> {
                   // Save scheduling logic
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary: Color.fromRGBO(246, 128, 37, 1),
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -504,7 +504,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
   List<bool> isProceeded = [];
   List<String> parameterArray = [];
   WebViewController controller = WebViewController()
-  ..loadRequest(Uri.parse('http://192.168.0.156:8080/?action=stream'));
+  ..loadRequest(Uri.parse('http://'+droneList[selectedDroneIndex].ip+':8080/?action=stream'));
   void _navigateToFlyingCommandPage() async {
     final Map<String, String> result = await Navigator.push(
       context,
@@ -608,7 +608,7 @@ class _RouteDestinationSetupPageState extends State<RouteDestinationSetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff30246e),
+      backgroundColor: Color.fromRGBO(246, 128, 37, 1),
       appBar: AppBar(
         title: Text('Route Destination Setup Page'),
       ),
