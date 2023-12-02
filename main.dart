@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
+import 'AnomalyAlertsPage.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //global variable
 class Drone {
@@ -19,6 +20,7 @@ class Route{
   String name;
 
   Route(this.name);
+
 }
 
 
@@ -49,8 +51,44 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
+/*final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();*/
 
-void main() {
+Future<void> main() async{
+  /*WidgetsFlutterBinding.ensureInitialized();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final DarwinInitializationSettings iosInitializationSettings =
+  DarwinInitializationSettings(
+    requestSoundPermission: false,
+    requestBadgePermission: false,
+    requestAlertPermission: false,
+    onDidReceiveLocalNotification:
+        (int id, String? title, String? body, String? payload) async {
+
+        },
+  );
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: iosInitializationSettings,
+  );
+
+
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: (NotificationResponse payload) {
+      // Handle notification click
+      if (payload == 'open_anomaly_alerts') {
+        // Navigate to Anomaly Alerts page
+        // You need to implement the navigation logic
+        print('Opening Anomaly Alerts page...');
+      }
+    },
+  );*/
   runApp(MyApp());
 }
 
@@ -956,6 +994,7 @@ class SelectDronePage extends StatelessWidget {
   }
 }
 
+
 class SelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -963,18 +1002,168 @@ class SelectionPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dobermann'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
+      body: PageView(
+        children: [
+          // Page 1
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Your existing buttons for Page 1
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(246, 128, 37, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.add_circle, size: 45),
+                          SizedBox(height: 10),
+                          Text(
+                              'Register',
+                              style: cool_font
+                          ),
+                          Text(
+                              'Drone',
+                              style: cool_font
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MissionSchedulingPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(246, 128, 37, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.schedule, size: 45),
+                          SizedBox(height: 10),
+                          Text(
+                              'Schedule',
+                              style: cool_font
+                          ),
+                          Text(
+                              'Mission',
+                              style: cool_font
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        fromWhereToSelectionPage = "newroute";
+                        droneList.isEmpty
+                            ? Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                        )
+                            : Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SelectDronePage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(246, 128, 37, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.airplanemode_active, size: 45),
+                          SizedBox(height: 10),
+                          Text(
+                              'Create',
+                              style: cool_font
+                          ),
+                          Text(
+                              'New',
+                              style: cool_font
+                          ),
+                          Text(
+                              'Route',
+                              style: cool_font
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        fromWhereToSelectionPage = "selectroute";
+                        droneList.isEmpty
+                            ? Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                        ) :Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SelectDronePage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(246, 128, 37, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.add_location, size: 45),
+                          SizedBox(height: 10),
+                          Text(
+                              'Start',
+                              style: cool_font
+                          ),
+                          Text(
+                              'Mission',
+                              style: cool_font
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Page 2
+          Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
+                      MaterialPageRoute(builder: (context) => AnomalyAlertsPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -986,134 +1175,29 @@ class SelectionPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Icon(Icons.add_circle, size: 45),
+                      Icon(Icons.notification_important, size: 45),
                       SizedBox(height: 10),
                       Text(
-                          'Register',
-                          style: cool_font
+                        'Anomaly',
+                        style: cool_font,
                       ),
                       Text(
-                          'Drone',
-                          style: cool_font
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MissionSchedulingPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(246, 128, 37, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.schedule, size: 45),
-                      SizedBox(height: 10),
-                      Text(
-                        'Schedule',
-                        style: cool_font
-                      ),
-                      Text(
-                        'Mission',
-                        style: cool_font
+                        'Alerts',
+                        style: cool_font,
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    fromWhereToSelectionPage = "newroute";
-                    droneList.isEmpty
-                    ? Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
-                    )
-                    : Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SelectDronePage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(246, 128, 37, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.airplanemode_active, size: 45),
-                      SizedBox(height: 10),
-                      Text(
-                        'Create',
-                        style: cool_font
-                      ),
-                      Text(
-                        'New',
-                        style: cool_font
-                      ),
-                      Text(
-                          'Route',
-                          style: cool_font
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    fromWhereToSelectionPage = "selectroute";
-                    droneList.isEmpty
-                    ? Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DroneRegistrationPage()),
-                    ) :Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SelectDronePage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(246, 128, 37, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 350),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.add_location, size: 45),
-                      SizedBox(height: 10),
-                      Text(
-                          'Start',
-                          style: cool_font
-                      ),
-                      Text(
-                          'Mission',
-                          style: cool_font
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
+
 
 var cool_font = GoogleFonts.rubik(
     textStyle: TextStyle(
